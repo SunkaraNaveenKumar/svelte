@@ -1,0 +1,88 @@
+we cannnot assign a class to child component 
+we cannot use percentages for styling purposes
+
+we can use just <button on:click></button in child 
+In parent <Child on:click={handleClick}/>  if there is only one button or one input component in the chlid
+************************
+Setting ssr to false inside your root +layout.server.js
+ effectively turns your entire app into a single-page app (SPA).
+ *************************
+we cannot manipulate the derived store externally
+
+let paused=true
+<div class="player" class:paused>
+</div>
+<style>
+.player.paused{
+
+}
+	.player:not(.paused) {
+		color: var(--fg-1);
+		filter: drop-shadow(0.5em 0.5em 1em rgba(0,0,0,0.1));
+	}
+</style>
+
+access dynamic params
+
+<script>
+  // Import the `$params` store from svelte-kit/store
+  import { params } from '@sveltejs/kit/store';
+
+  // Access the route parameters using `$params`
+  let { slug } = $params;
+</script>
+
+<main>
+  <h1>Dynamic Route Example</h1>
+  <p>Slug: {slug}</p>
+</main>
+****************************** page and error handling 
+page object 
+{
+    "error": {
+        "message": "Enhance your calm"
+    },
+    "params": {},
+    "route": {
+        "id": "/errorhandling/expectedError"
+    },
+    "status": 420,
+    "url": "http://localhost:5173/errorhandling/expectedError",
+    "form": null,
+    "data": {}
+}
+page errors
+<script>
+	import { page } from '$app/stores';
+	import { emojis } from './emojis.js';
+</script>
+
+<h1>{$page.status} {$page.error.message}</h1>
+<span style="font-size: 10em">
+	{emojis[$page.status] ?? emojis[500]}
+</span>
+
+unexpected error
+export const load =()=>{
+    throw new Error()
+    // throw new Error(404,"unauthorized") this dosent take 404, "unauthorized""
+}
+
+*********************http status code for redirecting the page 
+301 (Moved Permanently): Indicates that the requested resource has been permanently moved to a new location. The client should update its bookmarked URLs or links.
+
+302 (Found): Originally meant for temporary redirection, it's often used interchangeably with 303.
+
+303 (See Other): Indicates that the response to the request can be found at a different URI, and the client should issue a GET request to that URI.
+
+307 (Temporary Redirect): Indicates that the requested resource is temporarily located at a different URI, and the client should continue with the same request method.
+
+308 (Permanent Redirect): Similar to 301, indicating that the requested resource has been permanently moved, and the client should update its bookmarks or links.
+
+code 
+import { redirect } from '@sveltejs/kit';
+
+export function load() {
+	throw redirect(307,'/b');
+}
+***************************************************************
